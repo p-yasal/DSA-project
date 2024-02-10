@@ -1,39 +1,99 @@
-#   Main python file to run
+# Main python file to run
 
 import os
-import tkinter as tk
+from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox
+import customtkinter
+import tkinter.font as font
+import os
 
-#   Import compressor file
+# Import compressor file
 from compressor import *
 
-window=tk.Tk(screenName="File Compressor")
-window.title("File Compressor by huffman coding")
-if 'sfu' == os.name:
-    img = tk.PhotoImage(file="imgs/app_icon.gif")
-    window.iconphoto(True,img)
-else:
-    window.iconbitmap("imgs/app_icon.ico")
+# Import PhotoImage
+from tkinter import PhotoImage
 
-
-    #   Set window size
 width = 1000
-height= 1000
-window.geometry("{}x{}".format(width, height)) #same as in width and height
-#window.config(bg = tk.darkThemeBg)
+height = 1000
 
+window = Tk()
+window.title("File Compressor by Huffman Coding")
 
-#ADD A LABEL THAT WRITES FILE COMPRESSOR IN THE WINDOW
-label=tk.Label(text="File Compressor",
-            font=("times new roman", 16),
-            border=5,
-            #image = r"D:\DSA project\imgs\compress2.png",
-            width=20,
-            height=5,
-            fg="white",
-            justify="center")
-label.config(text="File Compressor", 
-             #image = r"D:\DSA project\imgs\compress2.png",
-             fg="Black")
-label.pack(padx=100,pady=50)
-homeImg = tk.PhotoImage(file="imgs/new.png").subsample(3,3)
+# Set window size
+window.geometry("{}x{}".format(width, height))
+
+# Load the background image
+background_image = PhotoImage(file="imgs/new.png")
+background_label = Label(window, image=background_image)
+background_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+# Display success message
+def displayMessageBox(title, description):
+    messagebox.showinfo(title, description)
+
+# Function to compress file
+def compressFile():
+    window.filename = filedialog.askopenfilename(initialdir=os.path.normpath("C://"),
+                                                  title="Select A Text File",
+                                                  filetypes=(("text files", "*.txt"),))
+    file_path = window.filename
+    compressFile = Compressor()
+    compressFile.compressor(file_path)
+    displayMessageBox("Compression Success",
+                      "You have successfully compressed file to the same directory.")
+
+# Function to extract file
+def extractFile():
+    window.filename = filedialog.askopenfilename(initialdir=os.path.normpath("C://"),
+                                                  title="Select A Binary File",
+                                                  filetypes=(("binary files", "*.bin"),))
+    file_path = window.filename
+    decompressFile = Compressor()
+    decompressFile.decompressor(file_path)
+    displayMessageBox("Extraction Success",
+                      "You have successfully extracted file to the same directory.")
+
+# Function to quit the application
+def quitApp():
+    window.destroy()
+
+# Use CTkButton instead of tkinter Button for compress and extract button
+
+# Set Y coordinates with appropriate spacing
+quitButton = customtkinter.CTkButton(master=window,
+                                      text="Quit",
+                                      text_color=("black", "black"),
+                                      hover=True, hover_color="#0b6eca",
+                                      width=170,
+                                      height=50,
+                                      border_width=0,
+                                      corner_radius=0,
+                                      command=quitApp)
+quitButton.place(x=width/2, y=height/2 - 60, anchor=CENTER)
+
+extractButton = customtkinter.CTkButton(master=window,
+                                         text="Extract file",
+                                         text_color=("black", "black"),
+                                         hover=True, hover_color="#0b6eca",
+                                         width=170,
+                                         height=50,
+                                         border_width=0,
+                                         corner_radius=0,
+                                         command=extractFile)
+extractButton.place(x=width/2, y=height/2 - 120, anchor=CENTER)
+
+compressButton = customtkinter.CTkButton(master=window,
+                                         text_color=("black", "black"),
+                                         text="Compress file",
+                                         hover=True,
+                                         hover_color="#0b6eca",
+                                         width=170,
+                                         height=50,
+                                         border_width=0,
+                                         textvariable="new roman times",
+                                         corner_radius=0,
+                                         command=compressFile)
+compressButton.place(x=width/2, y=height/2 - 180, anchor=CENTER)
+
 window.mainloop()
