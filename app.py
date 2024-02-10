@@ -7,7 +7,6 @@ from tkinter import messagebox
 import customtkinter
 import tkinter.font as font
 import os
-os.chdir(r"D:\DSA project")
 
 #   Import compressor file
 from compressor import *
