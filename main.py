@@ -23,12 +23,15 @@ window.title("File Compressor by Huffman Coding")
 # Set window size
 window.geometry("{}x{}".format(width, height))
 
+# Set window icon
+window.iconbitmap(os.path.join("imgs", "app_icon.ico"))
+
 # Load the background image
 background_image = PhotoImage(file="imgs/new.png")
 background_label = Label(window, image=background_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-# Display success message
+# Function to display success message
 def displayMessageBox(title, description):
     messagebox.showinfo(title, description)
 
@@ -38,10 +41,10 @@ def compressFile():
                                                   title="Select A Text File",
                                                   filetypes=(("text files", "*.txt"),))
     file_path = window.filename
-    compressFile = Compressor()
-    compressFile.compressor(file_path)
+    compressFile = compress()  # Corrected instantiation
+    compressed_file_path = compressFile.compressor(file_path)
     displayMessageBox("Compression Success",
-                      "You have successfully compressed file to the same directory.")
+                      f"You have successfully compressed the file to the same directory")
 
 # Function to extract file
 def extractFile():
@@ -49,10 +52,10 @@ def extractFile():
                                                   title="Select A Binary File",
                                                   filetypes=(("binary files", "*.bin"),))
     file_path = window.filename
-    decompressFile = Compressor()
-    decompressFile.decompressor(file_path)
+    decompressFile = compress()  # Corrected instantiation
+    extracted_file_path = decompressFile.decompressor(file_path)
     displayMessageBox("Extraction Success",
-                      "You have successfully extracted file to the same directory.")
+                      f"You have successfully extracted the file to the same directory")
 
 # Function to quit the application
 def quitApp():
@@ -97,3 +100,4 @@ compressButton = customtkinter.CTkButton(master=window,
 compressButton.place(x=width/2, y=height/2 - 180, anchor=CENTER)
 
 window.mainloop()
+
